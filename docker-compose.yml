@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+  web-server:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    networks:
+      default:
+        ipv4_address: 10.10.10.4
+    volumes:
+    - /data/adguardhome/own/workdir:/opt/adguardhome/work
+    - /data/adguardhome/own/confdir:/opt/adguardhome/conf
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp
+      - 68:68/udp
+      - 80:80/tcp
+      - 443:443/tcp
+      - 443:443/udp
+      - 784:784/udp
+      - 853:853/tcp
+      - 853:853/udp
+      - 3000:3000/tcp
+      - 5443:5443/tcp
+      - 5443:5443/udp
+      - 8853:8853/udp
+    restart: always
+networks:
+ default:
+    name: MyNet01
+    driver: macvlan
+    driver_opts:
+      parent: ens18
+    ipam:
+      config:
+        - subnet: 10.10.10.0/24
+          ip_range: 10.10.10.170/32
+          gateway: 10.10.10.1
+          
