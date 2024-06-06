@@ -1,4 +1,25 @@
+===================================
+Подготовка ОС
 
+Создание диска под данные:
+  pvcreate /dev/vda
+  vgcreate vgdata /dev/vda
+  lvcreate -l 100%Free -n lvdata vgdata
+  mkfs.xfs /dev/mapper/vgdata-lvdata
+
+Добавляем новый диск в fstab и монтируем в /data :
+  echo '/dev/mapper/vgdata-lvdata /data xfs defaults 0 1' >> /etc/fstab
+  mount -a
+
+Создаем каталоги:
+  mkdir -p /data/adguardhome/own/workdir
+  mkdir /data/adguardhome/own/confdir
+
+Создаем compose файл и копируем содержимое из docker-compose.yml
+Запускаем docker-compose :
+  docker-compose up -d
+
+====================================
 Описание docker-compose
 
 version: "3.9"
